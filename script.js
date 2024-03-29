@@ -10,14 +10,15 @@ const model = new OpenAI({
   
 //   console.log({ model });
 
-const promptFunc = async () => {
+const promptFunc = async (input) => {
     try {
-        const res = await model.call("How do you capitalize all characters of a string in JavaScript?");
-        console.log(res);
-    } catch (err) {
-        console.error(err)
+      const res = await model.call(input);
+      console.log(res);
     }
-}
+    catch (err) {
+      console.error(err);
+    }
+  };
 
 promptFunc()
 
