@@ -2,6 +2,8 @@
 const { OpenAI } = require('@langchain/openai');
 require('dotenv').config();
 const inquirer = require('inquirer');
+const { PromptTemplate } = require("langchain/prompts");
+const { StructuredOutputParser } = require("langchain/output_parsers");
 
 // Creates and stores a wrapper for the OpenAI package along with basic configuration
 const model = new OpenAI({ 
@@ -36,5 +38,22 @@ const init = () => {
     });
   };
 
-// Calls the initialization function and starts the script
-init();
+// Instantiation of a new object called "prompt" using the "PromptTemplate" class
+const prompt = new PromptTemplate({
+    template: "You are a javascript expert and will answer the user’s coding questions thoroughly as possible.\n{question}",
+    inputVariables: ["question"],
+});
+
+// Calls the "format" method on the "prompt" object and passes in the user input
+// format method returns a promise that resolves to the formatted string
+const promptInput = await prompt.format({
+    question: input
+  });
+
+// With a `StructuredOutputParser` we can define a schema for the output.
+const parser = StructuredOutputParser.fromNamesAndDescriptions({
+    code: "Javascript code that answers the user's question",
+    explanation: "detailed explanation of the example code provided",
+});
+
+console.log(await parser.parse(res));
