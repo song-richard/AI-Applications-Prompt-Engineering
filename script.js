@@ -1,7 +1,9 @@
+// dependencies
 const { OpenAI } = require('@langchain/openai');
 require('dotenv').config();
 const inquirer = require('inquirer');
 
+// Creates and stores a wrapper for the OpenAI package along with basic configuration
 const model = new OpenAI({ 
     openAIApiKey: process.env.OPENAI_API_KEY, 
     temperature: 0,
@@ -10,6 +12,7 @@ const model = new OpenAI({
   
 //   console.log({ model });
 
+// Uses the instantiated OpenAI wrapper, model, and makes a call based on input from inquirer
 const promptFunc = async (input) => {
     try {
       const res = await model.call(input);
@@ -20,8 +23,7 @@ const promptFunc = async (input) => {
     }
   };
 
-promptFunc()
-
+// Initialization function that uses inquirer to prompt the user and returns a promise. It takes the user input and passes it through the call method
 const init = () => {
     inquirer.prompt([
       {
@@ -33,5 +35,6 @@ const init = () => {
       promptFunc(inquirerResponse.name)
     });
   };
-  
-  init();
+
+// Calls the initialization function and starts the script
+init();
